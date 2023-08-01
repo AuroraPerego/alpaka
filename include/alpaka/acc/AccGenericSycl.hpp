@@ -54,7 +54,7 @@ namespace alpaka
         , public AtomicHierarchy<AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl>
         , public math::MathGenericSycl
         , public BlockSharedMemDynGenericSycl
-        , public BlockSharedMemStGenericSycl
+        , public BlockSharedMemStGenericSycl<TDim>
         , public BlockSyncGenericSycl<TDim>
         , public IntrinsicGenericSycl
         , public MemFenceGenericSycl
@@ -76,15 +76,14 @@ namespace alpaka
         AccGenericSycl(
             Vec<TDim, TIdx> const& threadElemExtent,
             sycl::nd_item<TDim::value> work_item,
-            sycl::local_accessor<std::byte> dyn_shared_acc,
-            sycl::local_accessor<std::byte> st_shared_acc)
+            sycl::local_accessor<std::byte> dyn_shared_acc)
             : WorkDivGenericSycl<TDim, TIdx>{threadElemExtent, work_item}
             , gb::IdxGbGenericSycl<TDim, TIdx>{work_item}
             , bt::IdxBtGenericSycl<TDim, TIdx>{work_item}
             , AtomicHierarchy<AtomicGenericSycl, AtomicGenericSycl, AtomicGenericSycl>{}
             , math::MathGenericSycl{}
             , BlockSharedMemDynGenericSycl{dyn_shared_acc}
-            , BlockSharedMemStGenericSycl{st_shared_acc}
+            , BlockSharedMemStGenericSycl<TDim>{work_item}
             , BlockSyncGenericSycl<TDim>{work_item}
             , IntrinsicGenericSycl{}
             , MemFenceGenericSycl{}
