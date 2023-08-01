@@ -5,7 +5,6 @@
 #pragma once
 
 #include "alpaka/block/shared/st/Traits.hpp"
-#include "alpaka/block/shared/st/detail/BlockSharedMemStMemberImpl.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -17,47 +16,34 @@
 namespace alpaka
 {
     //! The generic SYCL shared memory allocator.
-    class BlockSharedMemStGenericSycl
-        : public alpaka::detail::BlockSharedMemStMemberImpl<>
-        , public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl>
+    template<typename TDim>
+    struct BlockSharedMemStGenericSycl
+        : public concepts::Implements<ConceptBlockSharedSt, BlockSharedMemStGenericSycl<TDim>>
     {
-    public:
-        BlockSharedMemStGenericSycl(sycl::local_accessor<std::byte> accessor)
-            : BlockSharedMemStMemberImpl(
-                reinterpret_cast<std::uint8_t*>(accessor.get_pointer().get()),
-                accessor.size())
-            , m_accessor{accessor}
+        explicit BlockSharedMemStGenericSycl(sycl::nd_item<TDim::value> work_item) : my_item_st{work_item}
         {
         }
 
-    private:
-        sycl::local_accessor<std::byte> m_accessor;
+        sycl::nd_item<TDim::value> my_item_st;
     };
 } // namespace alpaka
 
 namespace alpaka::trait
 {
-    template<typename T, std::size_t TUniqueId>
-    struct DeclareSharedVar<T, TUniqueId, BlockSharedMemStGenericSycl>
+    template<typename T, std::size_t TUniqueId, typename TDim>
+    struct DeclareSharedVar<T, TUniqueId, BlockSharedMemStGenericSycl<TDim>>
     {
-        static auto declareVar(BlockSharedMemStGenericSycl const& smem) -> T&
+        static auto declareVar(BlockSharedMemStGenericSycl<TDim> const& smem) -> T&
         {
-            auto* data = smem.template getVarPtr<T>(TUniqueId);
-
-            if(!data)
-            {
-                smem.template alloc<T>(TUniqueId);
-                data = smem.template getLatestVarPtr<T>();
-            }
-            ALPAKA_ASSERT(data != nullptr);
-            return *data;
+            auto shMemBuff = sycl::ext::oneapi::group_local_memory_for_overwrite<T>(smem.my_item_st.get_group());
+            return *(shMemBuff.get());
         }
     };
 
-    template<>
-    struct FreeSharedVars<BlockSharedMemStGenericSycl>
+    template<typename TDim>
+    struct FreeSharedVars<BlockSharedMemStGenericSycl<TDim>>
     {
-        static auto freeVars(BlockSharedMemStGenericSycl const&) -> void
+        static auto freeVars(BlockSharedMemStGenericSycl<TDim> const&) -> void
         {
             // shared memory block data will be reused
         }

@@ -129,7 +129,7 @@ if(NOT TARGET alpaka)
     add_library(alpaka::alpaka ALIAS alpaka)
 endif()
 
-set(alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "1" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ, SYCL)")
+set(alpaka_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB "47" CACHE STRING "Kibibytes (1024B) of memory to allocate for block shared memory for backends requiring static allocation (includes CPU_B_OMP2_T_SEQ, CPU_B_TBB_T_SEQ, CPU_B_SEQ_T_SEQ)")
 
 # Random number generators
 option(alpaka_DISABLE_VENDOR_RNG "Disable the vendor specific random number generators (NVIDIA cuRAND, AMD rocRAND, Intel DPL)" OFF)

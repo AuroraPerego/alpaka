@@ -5,7 +5,6 @@
 #pragma once
 
 #include "alpaka/acc/Traits.hpp"
-#include "alpaka/block/shared/dyn/BlockSharedDynMemberAllocKiB.hpp"
 #include "alpaka/core/BoostPredef.hpp"
 #include "alpaka/core/STLTuple/STLTuple.hpp"
 #include "alpaka/core/Sycl.hpp"
@@ -40,10 +39,10 @@
 #    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+            [item_elements, dyn_shared_accessor, k_func, k_args](                                 \
                 sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]                  \
             {                                                                                                         \
-                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor};                   \
                 core::apply(                                                                                          \
                     [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
                     k_args);                                                                                          \
@@ -52,10 +51,10 @@
 #    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+            [item_elements, dyn_shared_accessor, k_func, k_args](                                 \
                 sycl::nd_item<TDim::value> work_item)                                                                 \
             {                                                                                                         \
-                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor, st_shared_accessor};                   \
+                auto acc = TAcc{item_elements, work_item, dyn_shared_accessor};                   \
                 core::apply(                                                                                          \
                     [k_func, &acc](typename std::decay_t<TArgs> const&... args) { k_func(acc, args...); },            \
                     k_args);                                                                                          \
@@ -65,7 +64,7 @@
         throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
         cgh.parallel_for(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
-            [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
+            [item_elements, dyn_shared_accessor, k_func, k_args](                                 \
                 sycl::nd_item<TDim::value> work_item) {});
 
 namespace alpaka
@@ -104,10 +103,6 @@ namespace alpaka
                     m_args));
 
             auto dyn_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{dyn_shared_mem_bytes}, cgh};
-
-            // allocate static shared memory -- value comes from the build system
-            constexpr auto st_shared_mem_bytes = std::size_t{ALPAKA_BLOCK_SHARED_DYN_MEMBER_ALLOC_KIB * 1024};
-            auto st_shared_accessor = sycl::local_accessor<std::byte>{sycl::range<1>{st_shared_mem_bytes}, cgh};
 
             // copy-by-value so we don't access 'this' on the device
             auto k_func = m_kernelFnObj;
