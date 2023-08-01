@@ -139,6 +139,12 @@ if(alpaka_DISABLE_VENDOR_RNG)
     target_compile_definitions(alpaka INTERFACE "ALPAKA_DISABLE_VENDOR_RNG")
 endif()
 
+# Random number generators
+option(alpaka_DISABLE_VENDOR_RNG "Disable the vendor specific random number generators (NVIDIA cuRAND, AMD rocRAND, Intel DPL)" OFF)
+if(alpaka_DISABLE_VENDOR_RNG)
+    target_compile_definitions(alpaka INTERFACE "ALPAKA_DISABLE_VENDOR_RNG")
+endif()
+
 #-------------------------------------------------------------------------------
 # Debug output of common variables.
 if(${alpaka_DEBUG} GREATER 1)
@@ -673,7 +679,6 @@ if(alpaka_ACC_SYCL_ENABLE)
         target_link_libraries(alpaka INTERFACE oneDPL)
     endif()
 endif()
-
 #-------------------------------------------------------------------------------
 # alpaka.
 if(alpaka_ACC_GPU_CUDA_ONLY_MODE)
