@@ -78,7 +78,7 @@ public:
     }
 
     template<typename T>
-    T& getValue(int key, T* ptr) {
+    T& getValue(int key) {
         printf("getting %d key \n", key);
         for (size_t i = 0; i < MaxKeys; ++i) {
             if (keys[i] == key and GetTypeIdentifier<T>::value == values[i]) {
@@ -88,7 +88,9 @@ public:
         }
         // allocate new and insert key in map
         printf("allocating new memeory\n");
-        insert<T>(key, ptr);
+        auto my_group = sycl::ext::oneapi::experimental::this_group<TDim>();
+        auto ptr = sycl::ext::oneapi::group_local_memory_for_overwrite<T>(my_group);
+        insert<T>(key, static_cast<T*>(ptr.get()));
         return *ptr; 
     }
 
@@ -132,9 +134,7 @@ namespace alpaka::trait
     {
         static auto declareVar(BlockSharedMemStGenericSycl<TDim> const& smem) -> T&
         {
-            auto my_group = sycl::ext::oneapi::experimental::this_group<TDim::value>();
-            auto ptr = sycl::ext::oneapi::group_local_memory_for_overwrite<T>(my_group);
-            return smem.keyValueMap.template getValue<T>(TUniqueId, static_cast<T*>(ptr.get()));
+            return smem.keyValueMap.template getValue<T>(TUniqueId);
             //auto shMemBuff = sycl::ext::oneapi::group_local_memory_for_overwrite<T>(smem.my_item_st.get_group());
             //smem.keyValueMap[key] = (shMemBuff.get());
             //return *(shMemBuff.get());
