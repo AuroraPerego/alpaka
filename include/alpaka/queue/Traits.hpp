@@ -33,6 +33,21 @@ namespace alpaka
         //! Queue for an accelerator
         template<typename TAcc, typename TProperty, typename TSfinae = void>
         struct QueueType;
+
+        //! The trait to enable profiling
+        //!
+        //! \tparam TAcc The accelerator.
+        //!
+        //! The default implementation is to keep profiling disabled
+	template<typename TAcc, typename TSfinae = void>
+	struct KernelProfiling : std::integral_constant<bool, false>
+	{
+	};
+	
+	//! This is a shortcut for the trait defined above
+	template<typename TAcc>
+	inline constexpr bool kernelProfiling = KernelProfiling<TAcc>::value;
+
     } // namespace trait
 
     //! Queues the given task in the given queue.

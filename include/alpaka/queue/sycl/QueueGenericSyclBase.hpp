@@ -117,7 +117,7 @@ namespace alpaka::detail
             return m_last_event;
         }
 
-        template<bool TBlocking, typename TTask>
+        template<bool TBlocking, typename TAcc, typename TTask>
         auto enqueue(TTask const& task) -> void
         {
             {
@@ -148,6 +148,13 @@ namespace alpaka::detail
                 m_dependencies.clear();
             }
 
+            if constexpr(trait::kernelProfiling<TAcc> && is_sycl_kernel<TTask>){
+                auto elapsed = m_last_event.template get_profiling_info<sycl::info::event_profiling::command_end>() - m_last_event.template get_profiling_info<sycl::info::event_profiling::command_start>();
+                std::cout <<"Profiling! The kernel execution took " << elapsed << " nanoseconds\n";
+} else if constexpr(trait::kernelProfiling<TAcc>){
+
+                auto elapsed = m_last_event.template get_profiling_info<sycl::info::event_profiling::command_end>() - m_last_event.template get_profiling_info<sycl::info::event_profiling::command_start>();
+                std::cout <<"Profiling! The copy/set operation took " << elapsed << " nanoseconds\n";}
             if constexpr(TBlocking)
                 wait();
         }
@@ -238,7 +245,7 @@ namespace alpaka::trait
         static auto enqueue(detail::QueueGenericSyclBase<TDev, TBlocking>& queue, TTask const& task) -> void
         {
             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-            queue.m_spQueueImpl->template enqueue<TBlocking>(task);
+            queue.m_spQueueImpl->template enqueue<TBlocking, TDev>(task);
         }
     };
 

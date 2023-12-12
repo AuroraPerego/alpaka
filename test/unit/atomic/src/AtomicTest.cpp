@@ -30,6 +30,11 @@ ALPAKA_FN_INLINE ALPAKA_FN_HOST_ACC auto equals(double a, double b) -> bool
     return alpaka::math::floatEqualExactNoWarning(a, b);
 }
 
+template<typename TAcc>
+struct alpaka::trait::KernelProfiling<TAcc> : std::true_type
+{
+};
+
 ALPAKA_NO_HOST_ACC_WARNING
 template<typename TAcc, typename T>
 ALPAKA_FN_ACC auto testAtomicAdd(TAcc const& acc, bool* success, T operandOrig) -> void
