@@ -263,6 +263,14 @@ namespace alpaka
                 // with std::forward to this function to be of type float instead of e.g. "float const & __ptr64"
                 // (MSVC). If not given by value, the kernel launch code does not copy the value but the pointer to the
                 // value location.
+
+#ifdef ALPAKA_ENABLE_PROFILING
+cudaEvent_t start, stop;
+cudaEventCreate(&start);
+cudaEventCreate(&stop);
+cudaEventRecord(start);
+#endif
+
                 std::apply(
                     [&](remove_restrict_t<std::decay_t<TArgs>> const&... args)
                     {
@@ -273,6 +281,14 @@ namespace alpaka
                             queue.getNativeHandle()>>>(threadElemExtent, task.m_kernelFnObj, args...);
                     },
                     task.m_args);
+
+#ifdef ALPAKA_ENABLE_PROFILING
+cudaEventRecord(stop);
+cudaEventSynchronize(stop);
+float milliseconds = 0;
+cudaEventElapsedTime(&milliseconds, start, stop);
+std::cout << "Profiling! The kernel execution took " << milliseconds * 1e6 << " nanoseconds" << std::endl;
+#endif
 
                 if constexpr(ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL)
                 {
