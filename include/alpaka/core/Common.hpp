@@ -137,12 +137,14 @@
     || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL                                                                              \
         template<typename TAcc>                                                                                       \
-        inline __device__
+        static __device__
 #else
 #    define ALPAKA_STATIC_ACC_MEM_GLOBAL                                                                              \
         template<typename TAcc>                                                                                       \
-        inline
+        static
 #endif
+
+
 
 //! This macro defines a variable lying in constant accelerator device memory.
 //!
@@ -186,11 +188,11 @@
     || BOOST_LANG_HIP)
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT                                                                            \
         template<typename TAcc>                                                                                       \
-        inline __constant__
+        static __constant__
 #else
 #    define ALPAKA_STATIC_ACC_MEM_CONSTANT                                                                            \
         template<typename TAcc>                                                                                       \
-        inline
+        static
 #endif
 
 //! This macro disables memory optimizations for annotated device memory.
