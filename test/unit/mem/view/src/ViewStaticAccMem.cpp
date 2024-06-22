@@ -16,8 +16,10 @@ using Elem = std::uint32_t;
 using Dim = alpaka::DimInt<2u>;
 using Idx = std::uint32_t;
 
+extern template ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<TAcc, Elem[3][2]> g_globalMemory2DUninitialized;
 ALPAKA_STATIC_ACC_MEM_GLOBAL alpaka::DevGlobal<TAcc, Elem[3][2]> g_globalMemory2DUninitialized;
 
+extern template ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<TAcc, const Elem[3][2]> g_constantMemory2DUninitialized;
 ALPAKA_STATIC_ACC_MEM_CONSTANT alpaka::DevGlobal<TAcc, const Elem[3][2]> g_constantMemory2DUninitialized;
 
 //! Uses static device memory on the accelerator defined globally for the whole compilation unit.
