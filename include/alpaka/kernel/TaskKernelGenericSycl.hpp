@@ -38,8 +38,8 @@
 
 #    include <sycl/sycl.hpp>
 
-#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)                                                    \
-        cgh.parallel_for(                                                                                             \
+#    define LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size, name)                                                    \
+        cgh.parallel_for<class name ## _kernel>(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
             [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
                 sycl::nd_item<TDim::value> work_item) [[intel::reqd_sub_group_size(sub_group_size)]]                  \
@@ -50,8 +50,8 @@
                     k_args);                                                                                          \
             });
 
-#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE                                                             \
-        cgh.parallel_for(                                                                                             \
+#    define LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE(name)                                                             \
+        cgh.parallel_for<class name ## _kernel>(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
             [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
                 sycl::nd_item<TDim::value> work_item)                                                                 \
@@ -62,9 +62,9 @@
                     k_args);                                                                                          \
             });
 
-#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL                                                                        \
+#    define THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL(name)                                                                        \
         throw sycl::exception(sycl::make_error_code(sycl::errc::kernel_not_supported));                               \
-        cgh.parallel_for(                                                                                             \
+        cgh.parallel_for<class name ## _kernel>(                                                                                             \
             sycl::nd_range<TDim::value>{global_size, local_size},                                                     \
             [item_elements, dyn_shared_accessor, st_shared_accessor, k_func, k_args](                                 \
                 sycl::nd_item<TDim::value> work_item) {});
@@ -120,25 +120,25 @@ namespace alpaka
             if constexpr(sub_group_size == 0)
             {
                 // no explicit subgroup size requirement
-                LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE
+                LAUNCH_SYCL_KERNEL_WITH_DEFAULT_SUBGROUP_SIZE(TKernelFn)
                 supported = true;
             }
             else
             {
 #    if(SYCL_SUBGROUP_SIZE == 0)
                 // no explicit SYCL target, assume JIT compilation
-                LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size)
+                LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(sub_group_size, TKernelFn)
                 supported = true;
 #    else
                 // check if the kernel should be launched with a subgroup size of 4
                 if constexpr(sub_group_size == 4)
                 {
 #        if(SYCL_SUBGROUP_SIZE & 4)
-                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(4)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(4, TKernelFn)
                     supported = true;
 #        else
                     // empty kernel, required to keep SYCL happy
-                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL(TKernelFn)
 #        endif
                 }
 
@@ -146,11 +146,11 @@ namespace alpaka
                 if constexpr(sub_group_size == 8)
                 {
 #        if(SYCL_SUBGROUP_SIZE & 8)
-                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(8)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(8, TKernelFn)
                     supported = true;
 #        else
                     // empty kernel, required to keep SYCL happy
-                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL(TKernelFn)
 #        endif
                 }
 
@@ -158,11 +158,11 @@ namespace alpaka
                 if constexpr(sub_group_size == 16)
                 {
 #        if(SYCL_SUBGROUP_SIZE & 16)
-                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(16)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(16, TKernelFn)
                     supported = true;
 #        else
                     // empty kernel, required to keep SYCL happy
-                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL(TKernelFn)
 #        endif
                 }
 
@@ -170,11 +170,11 @@ namespace alpaka
                 if constexpr(sub_group_size == 32)
                 {
 #        if(SYCL_SUBGROUP_SIZE & 32)
-                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(32)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(32, TKernelFn)
                     supported = true;
 #        else
                     // empty kernel, required to keep SYCL happy
-                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL(TKernelFn)
 #        endif
                 }
 
@@ -182,11 +182,11 @@ namespace alpaka
                 if constexpr(sub_group_size == 64)
                 {
 #        if(SYCL_SUBGROUP_SIZE & 64)
-                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(64)
+                    LAUNCH_SYCL_KERNEL_IF_SUBGROUP_SIZE_IS(64, TKernelFn)
                     supported = true;
 #        else
                     // empty kernel, required to keep SYCL happy
-                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL
+                    THROW_AND_LAUNCH_EMPTY_SYCL_KERNEL(TKernelFn)
 #        endif
                 }
 #    endif
