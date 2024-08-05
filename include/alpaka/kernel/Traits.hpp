@@ -72,12 +72,12 @@ namespace alpaka
 
         //! \brief The structure template to access to the functions attributes of a kernel function object.
         //! \tparam TAcc The accelerator type
-        //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and it's invocation
+        //! \tparam TKernelBundle The kernel object type, which includes the kernel function object and its invocation
         //! arguments.
         template<typename TAcc, typename TDev, typename TKernelBundle>
         struct FunctionAttributes
         {
-            //! \param kernelBundle The kernel object instance, which includes the kernel function object and it's
+            //! \param kernelBundle The kernel object instance, which includes the kernel function object and its
             //! invocation arguments.
             //! \return KernelFunctionAttributes data structure instance. The default version always returns the
             //! instance with fields which are set to zero.

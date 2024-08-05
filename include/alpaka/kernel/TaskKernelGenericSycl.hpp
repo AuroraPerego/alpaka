@@ -289,7 +289,7 @@ namespace alpaka::trait
     struct FunctionAttributes<AccGenericSycl<TDim, TIdx>, TDev, KernelBundle<TKernelFn, TArgs...>>
     {
         //! \param dev The device instance
-        //! \param kernelBundle Kernel bundeled with it's arguments. The function attributes of this kernel will be
+        //! \param kernelBundle Kernel bundled with its arguments. The function attributes of this kernel will be
         //! determined. Max threads per block is one of the attributes.
         //! \return KernelFunctionAttributes instance. The default version always returns an instance with zero
         //! fields. For CPU, the field of max threads allowed by kernel function for the block is 1.
