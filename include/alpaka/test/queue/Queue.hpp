@@ -133,23 +133,23 @@ namespace alpaka::test
 #    ifdef ALPAKA_SYCL_ONEAPI_GPU
         //! The default queue type trait specialization for the Intel CPU device.
         template<>
-        struct DefaultQueueType<alpaka::DevGpuSyclIntel>
+        struct DefaultQueueType<alpaka::DevGpuSycl>
         {
 #        if(ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-            using type = alpaka::QueueGpuSyclIntelBlocking;
+            using type = alpaka::QueueGpuSyclBlocking;
 #        else
-            using type = alpaka::QueueGpuSyclIntelNonBlocking;
+            using type = alpaka::QueueGpuSyclNonBlocking;
 #        endif
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::QueueGpuSyclIntelBlocking>
+        struct IsBlockingQueue<alpaka::QueueGpuSyclBlocking>
         {
             static constexpr auto value = true;
         };
 
         template<>
-        struct IsBlockingQueue<alpaka::QueueGpuSyclIntelNonBlocking>
+        struct IsBlockingQueue<alpaka::QueueGpuSyclNonBlocking>
         {
             static constexpr auto value = false;
         };
@@ -188,8 +188,8 @@ namespace alpaka::test
 #    endif
 #    ifdef ALPAKA_SYCL_ONEAPI_GPU
         ,
-        std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelBlocking>,
-        std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelNonBlocking>
+        std::tuple<alpaka::DevGpuSycl, alpaka::QueueGpuSyclBlocking>,
+        std::tuple<alpaka::DevGpuSycl, alpaka::QueueGpuSyclNonBlocking>
 #    endif
 #endif
         >;

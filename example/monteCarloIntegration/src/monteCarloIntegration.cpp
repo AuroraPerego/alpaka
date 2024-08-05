@@ -152,6 +152,6 @@ auto main() -> int
     // valid tags:
     //   TagCpuSerial, TagGpuHipRt, TagGpuCudaRt, TagCpuOmp2Blocks, TagCpuTbbBlocks,
     //   TagCpuOmp2Threads, TagCpuSycl, TagCpuTbbBlocks, TagCpuThreads,
-    //   TagFpgaSyclIntel, TagGenericSycl, TagGpuSyclIntel
+    //   TagFpgaSyclIntel, TagGenericSycl, TagGpuSycl
     return alpaka::executeForEachAccTag([=](auto const& tag) { return example(tag); });
 }

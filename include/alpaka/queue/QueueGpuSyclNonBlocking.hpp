@@ -4,14 +4,14 @@
 
 #pragma once
 
-#include "alpaka/dev/DevGpuSyclIntel.hpp"
-#include "alpaka/queue/QueueGenericSyclBlocking.hpp"
+#include "alpaka/dev/DevGpuSycl.hpp"
+#include "alpaka/queue/QueueGenericSyclNonBlocking.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 namespace alpaka
 {
-    using QueueGpuSyclIntelBlocking = QueueGenericSyclBlocking<DevGpuSyclIntel>;
+    using QueueGpuSyclNonBlocking = QueueGenericSyclNonBlocking<DevGpuSycl>;
 } // namespace alpaka
 
 #endif

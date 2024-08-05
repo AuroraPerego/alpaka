@@ -30,7 +30,7 @@ namespace alpaka
     CREATE_ACC_TAG(TagGenericSycl);
     CREATE_ACC_TAG(TagGpuCudaRt);
     CREATE_ACC_TAG(TagGpuHipRt);
-    CREATE_ACC_TAG(TagGpuSyclIntel);
+    CREATE_ACC_TAG(TagGpuSycl);
 
     namespace trait
     {
@@ -67,6 +67,6 @@ namespace alpaka
         alpaka::TagGpuHipRt,
         alpaka::TagCpuSycl,
         alpaka::TagFpgaSyclIntel,
-        alpaka::TagGpuSyclIntel>;
+        alpaka::TagGpuSycl>;
 
 } // namespace alpaka

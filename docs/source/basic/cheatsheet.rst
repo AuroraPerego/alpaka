@@ -43,7 +43,7 @@ Define accelerator type (CUDA, OpenMP,etc.)
 	AccGpuHipRt,
 	AccCpuSycl,
 	AccFpgaSyclIntel,
-	AccGpuSyclIntel,
+	AccGpuSycl,
 	AccCpuOmp2Blocks,
 	AccCpuOmp2Threads,
 	AccCpuTbbBlocks,

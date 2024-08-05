@@ -68,7 +68,7 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
     if constexpr(alpaka::accMatchesTags<
                      Acc,
                      alpaka::TagCpuSycl,
-                     alpaka::TagGpuSyclIntel,
+                     alpaka::TagGpuSycl,
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGenericSycl>)
     {

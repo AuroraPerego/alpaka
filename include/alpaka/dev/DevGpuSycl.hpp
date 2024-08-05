@@ -5,13 +5,13 @@
 #pragma once
 
 #include "alpaka/dev/DevGenericSycl.hpp"
-#include "alpaka/platform/PlatformGpuSyclIntel.hpp"
+#include "alpaka/platform/PlatformGpuSycl.hpp"
 
 #if defined(ALPAKA_ACC_SYCL_ENABLED) && defined(ALPAKA_SYCL_ONEAPI_GPU)
 
 namespace alpaka
 {
-    using DevGpuSyclIntel = DevGenericSycl<PlatformGpuSyclIntel>;
+    using DevGpuSycl = DevGenericSycl<PlatformGpuSycl>;
 } // namespace alpaka
 
 #endif

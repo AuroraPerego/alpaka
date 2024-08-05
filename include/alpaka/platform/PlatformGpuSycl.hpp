@@ -18,29 +18,26 @@ namespace alpaka
 {
     namespace detail
     {
-        struct IntelGpuSelector
+        struct SYCLGpuSelector
         {
             auto operator()(sycl::device const& dev) const -> int
             {
-                auto const& vendor = dev.get_info<sycl::info::device::vendor>();
-                auto const is_intel_gpu = dev.is_gpu() && (vendor.find("Intel(R) Corporation") != std::string::npos);
-
-                return is_intel_gpu ? 1 : -1;
+                return dev.is_gpu() ? 1 : -1;
             }
         };
     } // namespace detail
 
     //! The SYCL device manager.
-    using PlatformGpuSyclIntel = PlatformGenericSycl<detail::IntelGpuSelector>;
+    using PlatformGpuSycl = PlatformGenericSycl<detail::SYCLGpuSelector>;
 } // namespace alpaka
 
 namespace alpaka::trait
 {
     //! The SYCL device manager device type trait specialization.
     template<>
-    struct DevType<PlatformGpuSyclIntel>
+    struct DevType<PlatformGpuSycl>
     {
-        using type = DevGenericSycl<PlatformGpuSyclIntel>; // = DevGpuSyclIntel
+        using type = DevGenericSycl<PlatformGpuSycl>; // = DevGpuSycl
     };
 } // namespace alpaka::trait
 

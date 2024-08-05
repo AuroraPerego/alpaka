@@ -11,11 +11,11 @@
 namespace alpaka
 {
     template<typename TDim, typename TIdx>
-    class AccGpuSyclIntel;
+    class AccGpuSycl;
 
     template<typename TDim, typename TIdx, typename TKernelFnObj, typename... TArgs>
-    using TaskKernelGpuSyclIntel
-        = TaskKernelGenericSycl<AccGpuSyclIntel<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
+    using TaskKernelGpuSycl
+        = TaskKernelGenericSycl<AccGpuSycl<TDim, TIdx>, TDim, TIdx, TKernelFnObj, TArgs...>;
 } // namespace alpaka
 
 #endif
