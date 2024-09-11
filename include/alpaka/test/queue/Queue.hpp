@@ -141,6 +141,11 @@ namespace alpaka::test
         std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelBlocking>,
         std::tuple<alpaka::DevGpuSyclIntel, alpaka::QueueGpuSyclIntelNonBlocking>
 #    endif
+#    ifdef ALPAKA_SYCL_ONEAPI_GPU_NVIDIA
+        ,
+        std::tuple<alpaka::DevGpuSyclNvidia, alpaka::QueueGpuSyclNvidiaBlocking>,
+        std::tuple<alpaka::DevGpuSyclNvidia, alpaka::QueueGpuSyclNvidiaNonBlocking>
+#    endif
 #endif
         >;
 } // namespace alpaka::test

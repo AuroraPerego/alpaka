@@ -69,6 +69,7 @@ TEMPLATE_LIST_TEST_CASE("activemask", "[warp]", alpaka::test::TestAccs)
                      Acc,
                      alpaka::TagCpuSycl,
                      alpaka::TagGpuSyclIntel,
+                     alpaka::TagGpuSyclNvidia,
                      alpaka::TagFpgaSyclIntel,
                      alpaka::TagGenericSycl>)
     {
