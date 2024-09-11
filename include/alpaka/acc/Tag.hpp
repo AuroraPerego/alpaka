@@ -32,6 +32,7 @@ namespace alpaka
     CREATE_ACC_TAG(TagGpuHipRt);
     CREATE_ACC_TAG(TagGpuSyclIntel);
     CREATE_ACC_TAG(TagGpuSyclNvidia);
+    CREATE_ACC_TAG(TagGpuSyclAmd);
 
     namespace trait
     {
@@ -69,6 +70,7 @@ namespace alpaka
         alpaka::TagCpuSycl,
         alpaka::TagFpgaSyclIntel,
         alpaka::TagGpuSyclIntel,
-        alpaka::TagGpuSyclNvidia>;
+        alpaka::TagGpuSyclNvidia,
+        alpaka::TagGpuSyclAmd>;
 
 } // namespace alpaka
