@@ -4,12 +4,12 @@
 
 #include "mysqrt.hpp"
 
-#if defined(__CUDA_ARCH__)
-#    include <cuda_runtime.h>
-#elif defined(__HIP_DEVICE_COMPILE__)
+#if defined(__HIP_DEVICE_COMPILE__)
 #    include <hip_runtime.h>
 #elif defined(__SYCL_DEVICE_ONLY__)
 #    include <sycl/sycl.hpp>
+#elif defined(__CUDA_ARCH__)
+#    include <cuda_runtime.h>
 #else
 #    include <cmath>
 #endif
