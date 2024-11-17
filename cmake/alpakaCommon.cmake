@@ -199,7 +199,7 @@ else()
     # https://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#150
     # for example, is required to create alpaka::EnabledAccTags
     # the feature is implemented since Clang 4
-    alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<AND:$<CXX_COMPILER_ID:Clang,AppleClang,IntelLLVM>>:SHELL:-frelaxed-template-template-args>")
+    alpaka_set_compiler_options(HOST_DEVICE target alpaka "$<$<AND:$<CXX_COMPILER_ID:Clang,AppleClang>>:SHELL:-frelaxed-template-template-args>")
 
     # Add debug optimization levels. CMake doesn't do this by default.
     # Note that -Og is the recommended gcc optimization level for debug mode but is equivalent to -O1 for clang (and its derivates).
@@ -672,7 +672,6 @@ if(alpaka_ACC_SYCL_ENABLE)
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-fsycl")
         target_link_options(alpaka INTERFACE "-fsycl")
         alpaka_set_compiler_options(HOST_DEVICE target alpaka "-sycl-std=2020")
-        alpaka_set_compiler_options(HOST_DEVICE target alpaka "-frelaxed-template-template-args")
 
         #-----------------------------------------------------------------------------------------------------------------
         # Determine SYCL targets
