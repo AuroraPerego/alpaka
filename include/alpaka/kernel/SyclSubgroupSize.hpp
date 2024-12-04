@@ -40,20 +40,17 @@
 
 #            define SYCL_SUBGROUP_SIZE (16 | 32)
 
-#        elif (__SYCL_TARGET_NVIDIA_GPU_SM50__) || /* NVIDIA Maxwell architecture (compute capability 5.0) */         \
-            (__SYCL_TARGET_NVIDIA_GPU_SM52__) || /* NVIDIA Maxwell architecture (compute capability 5.2) */           \
-            (__SYCL_TARGET_NVIDIA_GPU_SM53__) || /* NVIDIA Jetson TX1 / Nano (compute capability 5.3) */              \
-            (__SYCL_TARGET_NVIDIA_GPU_SM60__) || /* NVIDIA Pascal architecture (compute capability 6.0) */            \
-            (__SYCL_TARGET_NVIDIA_GPU_SM61__) || /* NVIDIA Pascal architecture (compute capability 6.1) */            \
-            (__SYCL_TARGET_NVIDIA_GPU_SM62__) || /* NVIDIA Jetson TX2 (compute capability 6.2) */                     \
-            (__SYCL_TARGET_NVIDIA_GPU_SM70__) || /* NVIDIA Volta architecture (compute capability 7.0) */             \
-            (__SYCL_TARGET_NVIDIA_GPU_SM72__) || /* NVIDIA Jetson AGX (compute capability 7.2) */                     \
-            (__SYCL_TARGET_NVIDIA_GPU_SM75__) || /* NVIDIA Turing architecture (compute capability 7.5) */            \
-            (__SYCL_TARGET_NVIDIA_GPU_SM80__) || /* NVIDIA Ampere architecture (compute capability 8.0) */            \
-            (__SYCL_TARGET_NVIDIA_GPU_SM86__) || /* NVIDIA Ampere architecture (compute capability 8.6) */            \
-            (__SYCL_TARGET_NVIDIA_GPU_SM87__) || /* NVIDIA Jetson/Drive AGX Orin (compute capability 8.7) */          \
-            (__SYCL_TARGET_NVIDIA_GPU_SM89__) || /* NVIDIA Ada Lovelace arch. (compute capability 8.9) */             \
-            (__SYCL_TARGET_NVIDIA_GPU_SM90__) /* NVIDIA Hopper architecture (compute capability 9.0) */
+#        elif(__SYCL_TARGET_NVIDIA_GPU_SM_60__) || /* NVIDIA Pascal architecture (compute capability 6.0) */          \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_61__) || /* NVIDIA Pascal architecture (compute capability 6.1) */           \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_62__) || /* NVIDIA Jetson TX2 (compute capability 6.2) */                    \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_70__) || /* NVIDIA Volta architecture (compute capability 7.0) */            \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_72__) || /* NVIDIA Jetson AGX (compute capability 7.2) */                    \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_75__) || /* NVIDIA Turing architecture (compute capability 7.5) */           \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_80__) || /* NVIDIA Ampere architecture (compute capability 8.0) */           \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_86__) || /* NVIDIA Ampere architecture (compute capability 8.6) */           \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_87__) || /* NVIDIA Jetson/Drive AGX Orin (compute capability 8.7) */         \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_89__) || /* NVIDIA Ada Lovelace arch. (compute capability 8.9) */            \
+            (__SYCL_TARGET_NVIDIA_GPU_SM_90__) /* NVIDIA Hopper architecture (compute capability 9.0) */
 
 #            define SYCL_SUBGROUP_SIZE (32)
 
